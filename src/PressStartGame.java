@@ -3,19 +3,13 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class SnakeGrid {
+public class PressStartGame {
   private BufferedImage buffer;
   private Graphics graphicsBuffer;
-  private int maxSizeGrid;
-  private int quantCell;
-  private int sizeCell;
 
-  public SnakeGrid(int maxSizeGrid, int quantCell, BufferedImage buffer) {
+  public PressStartGame(BufferedImage buffer) {
     this.buffer = buffer;
     this.graphicsBuffer = buffer.createGraphics();
-    this.maxSizeGrid = maxSizeGrid;
-    this.quantCell = quantCell;
-    this.sizeCell = maxSizeGrid / quantCell;
   }
 
   public void putPixel(int x, int y, Color c) {
@@ -79,31 +73,6 @@ public class SnakeGrid {
     drawLine(x1, y2, x1, y1, color);
   }
 
-  public void drawGrid(Color color, int panelWidth, int panelHeight) {
-    int gridWidth = quantCell * sizeCell;
-    int gridHeight = quantCell * sizeCell;
-
-    int emptySpaceX = (panelWidth - gridWidth) / 2;
-    int emptySpaceY = (panelHeight - gridHeight) / 2;
-
-    for (int i = 0; i < quantCell; i++) {
-      for (int j = 0; j < quantCell; j++) {
-        int x1 = emptySpaceX + (i * sizeCell);
-        int y1 = emptySpaceY + (j * sizeCell);
-        int x2 = x1 + sizeCell;
-        int y2 = y1 + sizeCell;
-        Point[] vertices = {
-            new Point(x1, y1),
-            new Point(x1, y2),
-            new Point(x2, y2),
-            new Point(x2, y1)
-        };
-        fill(vertices, Color.GRAY);
-        drawRect(x1, y1, x2, y2, color);
-      }
-    }
-  }
-
   private void fill(Point[] vertices, Color color) {
     int minY = Integer.MAX_VALUE;
     int maxY = Integer.MIN_VALUE;
@@ -138,11 +107,19 @@ public class SnakeGrid {
     }
   }
 
-  public void showGrid() {
-    if (buffer != null) {
-      graphicsBuffer.setColor(Color.WHITE);
-      drawGrid(Color.WHITE, maxSizeGrid, maxSizeGrid);
-    }
+  public void drawStartGame() {
+    // Dibujar la letra "S"
+    drawRect(50, 50, 90, 90, Color.GREEN);
+    drawRect(90, 50, 130, 90, Color.GREEN);
+    drawRect(130, 50, 170, 90, Color.GREEN);
+    drawRect(170, 50, 210, 90, Color.GREEN);
+    drawRect(50, 90, 90, 130, Color.GREEN);
   }
 
+  public void showGameStart() {
+    if (buffer != null) {
+      graphicsBuffer.setColor(Color.RED);
+      drawStartGame();
+    }
+  }
 }

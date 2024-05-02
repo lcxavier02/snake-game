@@ -1,6 +1,4 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -17,15 +15,18 @@ public class SnakePanel extends JPanel implements Runnable, KeyListener {
   Graphics graphicsBuffer;
   int maxSizeGrid = WINDOW_WIDTH;
   int quantCell = 32;
+  private boolean startPressed = false;
 
   private SnakeGrid snakeGrid;
   private SnakeBody snakeBody;
+  private PressStartGame gameStart;
 
   public SnakePanel() {
     if (buffer == null) {
       buffer = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_ARGB);
     }
 
+    makeStartGame();
     makeGrid();
     makeSnake();
 
@@ -36,6 +37,10 @@ public class SnakePanel extends JPanel implements Runnable, KeyListener {
 
     setFocusable(true);
     addKeyListener(this);
+  }
+
+  public void makeStartGame() {
+    gameStart = new PressStartGame(buffer);
   }
 
   public void makeGrid() {
@@ -50,7 +55,11 @@ public class SnakePanel extends JPanel implements Runnable, KeyListener {
   public void paintComponent(Graphics g) {
     image = createImage(getWidth(), getHeight());
     graphicsBuffer = image.getGraphics();
-    showComponents();
+    if (!startPressed) {
+      gameStart.drawStartGame();
+    } else {
+      showComponents();
+    }
     g.drawImage(buffer, 0, 0, this);
   }
 
@@ -63,8 +72,10 @@ public class SnakePanel extends JPanel implements Runnable, KeyListener {
   @Override
   public void run() {
     while (true) {
-      snakeBody.advance();
-      repaint();
+      if (startPressed) {
+        snakeBody.advance();
+        repaint();
+      }
       try {
         Thread.sleep(100);
       } catch (InterruptedException e) {
@@ -82,23 +93,26 @@ public class SnakePanel extends JPanel implements Runnable, KeyListener {
   public void keyPressed(KeyEvent e) {
     int keyCode = e.getKeyCode();
 
-    // Manejar la tecla presionada
-    switch (keyCode) {
-      case KeyEvent.VK_UP:
-        snakeBody.setDirection("U");
-        break;
-      case KeyEvent.VK_DOWN:
-        snakeBody.setDirection("D");
-        break;
-      case KeyEvent.VK_LEFT:
-        snakeBody.setDirection("L");
-        break;
-      case KeyEvent.VK_RIGHT:
-        snakeBody.setDirection("R");
-        break;
-      default:
-        System.out.println("Key not accepted: " + keyCode);
-        break;
+    if (!startPressed && keyCode == KeyEvent.VK_ENTER) {
+      startPressed = true;
+    } else if (startPressed) {
+      switch (keyCode) {
+        case KeyEvent.VK_UP:
+          snakeBody.setDirection("U");
+          break;
+        case KeyEvent.VK_DOWN:
+          snakeBody.setDirection("D");
+          break;
+        case KeyEvent.VK_LEFT:
+          snakeBody.setDirection("L");
+          break;
+        case KeyEvent.VK_RIGHT:
+          snakeBody.setDirection("R");
+          break;
+        default:
+          System.out.println("Key not accepted: " + keyCode);
+          break;
+      }
     }
   }
 

@@ -5,18 +5,18 @@ import java.util.List;
 import java.util.Collections;
 
 public class SnakeBody {
+  private BufferedImage buffer;
+  private Graphics graphicsBuffer;
   private int maxSizeGrid;
   private int quantCell;
   private int sizeCell;
-  private BufferedImage buffer;
-  private Graphics graphicsBuffer;
 
   Color snakeColor = Color.GREEN;
   Color foodColor = Color.RED;
   List<int[]> snake = new ArrayList<int[]>();
-  int[] food = new int[2];
   String direction = "R";
   String nextDirection = "R";
+  int[] food = new int[2];
 
   public SnakeBody(int maxSizeGrid, int quantCell, BufferedImage buffer) {
     this.maxSizeGrid = maxSizeGrid;
@@ -113,7 +113,7 @@ public class SnakeBody {
           new Point(x2, y2),
           new Point(x2, y)
       };
-      scanLine(vertices, snakeColor);
+      fill(vertices, snakeColor);
       drawRect(x, y, x2, y2, color);
     }
   }
@@ -154,7 +154,7 @@ public class SnakeBody {
     }
   }
 
-  private void scanLine(Point[] vertices, Color color) {
+  private void fill(Point[] vertices, Color color) {
     int minY = Integer.MAX_VALUE;
     int maxY = Integer.MIN_VALUE;
     for (Point vertex : vertices) {
