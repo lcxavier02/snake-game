@@ -14,7 +14,7 @@ public class SnakePanel extends JPanel implements Runnable, KeyListener {
   public BufferedImage buffer;
   Graphics graphicsBuffer;
   int maxSizeGrid = WINDOW_WIDTH;
-  int quantCell = 32;
+  int quantCell = 42;
   private boolean startPressed = false;
 
   private SnakeGrid snakeGrid;

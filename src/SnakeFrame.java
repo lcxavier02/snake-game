@@ -11,7 +11,7 @@ public class SnakeFrame extends JFrame {
     setTitle("Snake Game");
     setResizable(false);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setBackground(Color.lightGray);
+    setBackground(Color.WHITE);
 
     pack();
     setLocationRelativeTo(null);
