@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import java.util.Collections;
 
 public class SnakeBody {
@@ -10,6 +11,8 @@ public class SnakeBody {
   private int maxSizeGrid;
   private int quantCell;
   private int sizeCell;
+  private int score = 0;
+  private boolean gameOver;
 
   Color snakeColor = Color.GREEN;
   Color foodColor = Color.RED;
@@ -24,6 +27,7 @@ public class SnakeBody {
     this.sizeCell = maxSizeGrid / quantCell;
     this.buffer = buffer;
     this.graphicsBuffer = buffer.createGraphics();
+    this.gameOver = false;
 
     int[] a = { quantCell / 2 - 1, quantCell / 2 - 1 };
     int[] b = { quantCell / 2, quantCell / 2 - 1 };
@@ -203,6 +207,9 @@ public class SnakeBody {
   }
 
   public void advance() {
+    if (gameOver) {
+      return; // Si el juego ya ha terminado, no hagas nada
+    }
     equalDirection();
 
     int[] last = snake.get(snake.size() - 1);
@@ -236,16 +243,48 @@ public class SnakeBody {
     }
 
     if (collideItself) {
-      System.out.println("You have lost!");
+      JOptionPane.showMessageDialog(null, "You have lost!");
+      gameOver = true;
     } else {
       if (newHead[0] == food[0] && newHead[1] == food[1]) {
         snake.add(newHead);
         generateFood();
+        score++;
       } else {
         snake.add(newHead);
         snake.remove(0);
       }
     }
+  }
+
+  public void drawScore() {
+    String scoreText = "Score: " + score;
+    int fontSize = 16;
+    Color textColor = Color.BLACK;
+    Color backgroundColor = Color.WHITE;
+    int x = 10;
+    int y = 11;
+
+    int rectX = x;
+    int rectY = y - fontSize - 4;
+    int rectWidth = 100;
+    int rectHeight = fontSize + 5;
+
+    Point[] rectVertices = {
+        new Point(rectX, rectY),
+        new Point(rectX + rectWidth, rectY),
+        new Point(rectX + rectWidth, rectY + rectHeight),
+        new Point(rectX, rectY + rectHeight)
+    };
+    fill(rectVertices, backgroundColor);
+
+    drawText(scoreText, x, y, fontSize, textColor);
+  }
+
+  public void drawText(String text, int x, int y, int fontSize, Color color) {
+    graphicsBuffer.setColor(color);
+    graphicsBuffer.setFont(new Font("Arial", Font.PLAIN, fontSize));
+    graphicsBuffer.drawString(text, x, y);
   }
 
   public void generateFood() {

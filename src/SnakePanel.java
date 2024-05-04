@@ -9,10 +9,10 @@ public class SnakePanel extends JPanel implements Runnable, KeyListener {
   private static final int WINDOW_HEIGHT = 820;
   static final Dimension WINDOW_SIZE = new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-  Thread thread;
-  Image image;
-  public BufferedImage buffer;
   Graphics graphicsBuffer;
+  Image image;
+  Thread thread;
+  public BufferedImage buffer;
   int maxSizeGrid = WINDOW_WIDTH;
   int quantCell = 42;
   private boolean startPressed = false;
@@ -66,6 +66,7 @@ public class SnakePanel extends JPanel implements Runnable, KeyListener {
   public void showComponents() {
     snakeGrid.showGrid();
     snakeBody.showSnake();
+    snakeBody.drawScore();
     snakeBody.showFood();
   }
 
