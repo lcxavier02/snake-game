@@ -66,6 +66,25 @@ public class PressStartGame {
     }
   }
 
+  public void drawCoordinates(int[][] vertex, Color c) {
+    for (int[] rect : vertex) {
+      int x1 = rect[0];
+      int y1 = rect[1];
+      int x2 = rect[2];
+      int y2 = rect[3];
+
+      Point[] vertices = {
+          new Point(x1, y1),
+          new Point(x2, y1),
+          new Point(x2, y2),
+          new Point(x1, y2)
+      };
+
+      fill(vertices, c);
+      drawRect(x1, y1, x2, y2, c);
+    }
+  }
+
   public void drawRect(int x1, int y1, int x2, int y2, Color color) {
     drawLine(x1, y1, x2, y1, color);
     drawLine(x2, y1, x2, y2, color);
@@ -113,93 +132,187 @@ public class PressStartGame {
     drawALetter();
     drawKLetter();
     drawELetter();
+
+    drawPLetter();
+    drawRLetter();
+    drawEGameLetter();
+    drawDoubleSLetter();
+
+    drawEGameLetter();
+    drawNGameLetter();
+    drawTLetter();
+    drawEGameLetter();
+    drawRLetter();
+
+    drawTLetter();
+    drawOLetter();
+
+    drawDoubleSLetter();
+    drawTLetter();
+    drawAGameLetter();
+    drawRLetter();
+    drawTLetter();
+  }
+
+  public void drawPLetter() {
+    int[][] rectCoordinates = {
+        { 50, 260, 70, 265 },
+        { 50, 260, 55, 290 },
+        { 50, 270, 70, 275 },
+        { 70, 260, 65, 275 }
+    };
+
+    drawCoordinates(rectCoordinates, Color.BLACK);
+  }
+
+  public void drawRLetter() {
+    int[][] rectCoordinates = {
+        { 75, 260, 90, 265 },
+        { 75, 260, 80, 290 },
+        { 75, 270, 90, 275 },
+        { 95, 265, 90, 270 },
+        { 85, 275, 90, 280 },
+        { 90, 280, 95, 290 },
+
+        { 300, 260, 315, 265 },
+        { 300, 260, 305, 290 },
+        { 300, 270, 315, 275 },
+        { 320, 265, 315, 270 },
+        { 310, 275, 315, 280 },
+        { 315, 280, 320, 290 },
+
+        { 495, 260, 510, 265 },
+        { 495, 260, 500, 290 },
+        { 495, 270, 510, 275 },
+        { 515, 265, 510, 270 },
+        { 505, 275, 510, 280 },
+        { 510, 280, 515, 290 }
+    };
+    drawCoordinates(rectCoordinates, Color.BLACK);
+  }
+
+  public void drawEGameLetter() {
+    int[][] rectCoordinates = {
+        { 100, 260, 105, 290 },
+        { 100, 260, 120, 265 },
+        { 100, 272, 115, 277 },
+        { 100, 285, 120, 290 },
+
+        { 200, 260, 205, 290 },
+        { 200, 260, 220, 265 },
+        { 200, 272, 215, 277 },
+        { 200, 285, 220, 290 },
+
+        { 275, 260, 280, 290 },
+        { 275, 260, 295, 265 },
+        { 275, 272, 290, 277 },
+        { 275, 285, 295, 290 }
+    };
+    drawCoordinates(rectCoordinates, Color.BLACK);
+  }
+
+  public void drawDoubleSLetter() {
+    int[][] rectCoordinates = {
+        { 125, 260, 145, 265 },
+        { 125, 260, 130, 275 },
+        { 125, 272, 145, 277 },
+        { 140, 277, 145, 290 },
+        { 125, 285, 145, 290 },
+
+        { 150, 260, 170, 265 },
+        { 150, 260, 155, 275 },
+        { 150, 272, 170, 277 },
+        { 165, 277, 170, 290 },
+        { 150, 285, 170, 290 },
+
+        { 420, 260, 440, 265 },
+        { 420, 260, 425, 275 },
+        { 420, 272, 440, 277 },
+        { 435, 277, 440, 290 },
+        { 420, 285, 440, 290 }
+    };
+    drawCoordinates(rectCoordinates, Color.BLACK);
+  }
+
+  public void drawNGameLetter() {
+    int[][] rectCoordinates = {
+        { 225, 260, 230, 290 },
+        { 230, 270, 235, 275 },
+        { 235, 275, 240, 280 },
+        { 240, 260, 245, 290 }
+    };
+    drawCoordinates(rectCoordinates, Color.BLACK);
+  }
+
+  public void drawTLetter() {
+    int[][] rectCoordinates = {
+        { 250, 260, 270, 265 },
+        { 258, 260, 262, 290 },
+
+        { 350, 260, 370, 265 },
+        { 358, 260, 362, 290 },
+
+        { 445, 260, 465, 265 },
+        { 453, 260, 457, 290 },
+
+        { 520, 260, 540, 265 },
+        { 528, 260, 532, 290 }
+    };
+    drawCoordinates(rectCoordinates, Color.BLACK);
+  }
+
+  public void drawOLetter() {
+    int[][] rectCoordinates = {
+        { 375, 265, 380, 285 },
+        { 380, 260, 390, 265 },
+        { 380, 285, 390, 290 },
+        { 390, 265, 394, 285 }
+    };
+    drawCoordinates(rectCoordinates, Color.BLACK);
+  }
+
+  public void drawAGameLetter() {
+    int[][] rectCoordinates = {
+        { 470, 265, 475, 290 },
+        { 475, 260, 485, 265 },
+        { 485, 265, 490, 290 },
+        { 470, 270, 490, 275 }
+    };
+    drawCoordinates(rectCoordinates, Color.BLACK);
   }
 
   public void drawSLetter() {
     int[][] rectCoordinates = {
-        { 50, 50, 90, 90 },
-        { 90, 50, 130, 90 },
-        { 130, 50, 170, 90 },
+        { 90, 50, 170, 90 },
         { 50, 90, 90, 130 },
-        { 50, 130, 90, 170 },
-        { 90, 130, 130, 170 },
-        { 130, 130, 170, 170 },
-        { 130, 170, 170, 210 },
-        { 130, 210, 170, 250 },
-        { 90, 210, 130, 250 },
-        { 50, 210, 90, 250 }
+        { 90, 130, 170, 170 },
+        { 130, 170, 170, 250 },
+        { 50, 210, 130, 250 },
     };
 
-    for (int[] rect : rectCoordinates) {
-      int x1 = rect[0];
-      int y1 = rect[1];
-      int x2 = rect[2];
-      int y2 = rect[3];
-
-      Point[] vertices = {
-          new Point(x1, y1),
-          new Point(x2, y1),
-          new Point(x2, y2),
-          new Point(x1, y2)
-      };
-
-      fill(vertices, Color.GREEN);
-
-      drawRect(x1, y1, x2, y2, Color.GREEN);
-    }
+    drawCoordinates(rectCoordinates, Color.GREEN);
   }
 
   public void drawNLetter() {
     int[][] nRectCoordinates = {
         { 200, 50, 240, 250 },
-        { 240, 50, 280, 100 },
-        { 280, 100, 320, 250 }
+        { 240, 70, 260, 120 },
+        { 260, 120, 280, 170 },
+        { 280, 50, 320, 250 }
     };
 
-    for (int[] rect : nRectCoordinates) {
-      int x1 = rect[0];
-      int y1 = rect[1];
-      int x2 = rect[2];
-      int y2 = rect[3];
-
-      Point[] vertices = {
-          new Point(x1, y1),
-          new Point(x2, y1),
-          new Point(x2, y2),
-          new Point(x1, y2)
-      };
-
-      fill(vertices, Color.GREEN);
-
-      drawRect(x1, y1, x2, y2, Color.GREEN);
-    }
+    drawCoordinates(nRectCoordinates, Color.GREEN);
   }
 
   public void drawALetter() {
     int[][] aRectCoordinates = {
-        { 350, 50, 390, 250 },
-        { 350, 50, 470, 90 },
+        { 350, 90, 390, 250 },
+        { 380, 50, 440, 90 },
         { 350, 130, 470, 170 },
-        { 430, 50, 470, 250 }
+        { 430, 90, 470, 250 }
     };
 
-    for (int[] rect : aRectCoordinates) {
-      int x1 = rect[0];
-      int y1 = rect[1];
-      int x2 = rect[2];
-      int y2 = rect[3];
-
-      Point[] vertices = {
-          new Point(x1, y1),
-          new Point(x2, y1),
-          new Point(x2, y2),
-          new Point(x1, y2)
-      };
-
-      fill(vertices, Color.GREEN);
-
-      drawRect(x1, y1, x2, y2, Color.GREEN);
-    }
+    drawCoordinates(aRectCoordinates, Color.GREEN);
   }
 
   public void drawKLetter() {
@@ -210,23 +323,7 @@ public class PressStartGame {
         { 580, 170, 620, 250 }
     };
 
-    for (int[] rect : aRectCoordinates) {
-      int x1 = rect[0];
-      int y1 = rect[1];
-      int x2 = rect[2];
-      int y2 = rect[3];
-
-      Point[] vertices = {
-          new Point(x1, y1),
-          new Point(x2, y1),
-          new Point(x2, y2),
-          new Point(x1, y2)
-      };
-
-      fill(vertices, Color.GREEN);
-
-      drawRect(x1, y1, x2, y2, Color.GREEN);
-    }
+    drawCoordinates(aRectCoordinates, Color.GREEN);
   }
 
   public void drawELetter() {
@@ -237,23 +334,7 @@ public class PressStartGame {
         { 650, 210, 760, 250 }
     };
 
-    for (int[] rect : aRectCoordinates) {
-      int x1 = rect[0];
-      int y1 = rect[1];
-      int x2 = rect[2];
-      int y2 = rect[3];
-
-      Point[] vertices = {
-          new Point(x1, y1),
-          new Point(x2, y1),
-          new Point(x2, y2),
-          new Point(x1, y2)
-      };
-
-      fill(vertices, Color.GREEN);
-
-      drawRect(x1, y1, x2, y2, Color.GREEN);
-    }
+    drawCoordinates(aRectCoordinates, Color.GREEN);
   }
 
   public void showGameStart() {
