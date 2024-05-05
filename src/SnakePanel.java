@@ -1,10 +1,12 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
 
-public class SnakePanel extends JPanel implements Runnable, KeyListener {
+public class SnakePanel extends JPanel implements Runnable, KeyListener, ActionListener {
   private static final int WINDOW_WIDTH = 820;
   private static final int WINDOW_HEIGHT = 820;
   static final Dimension WINDOW_SIZE = new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -16,7 +18,9 @@ public class SnakePanel extends JPanel implements Runnable, KeyListener {
   int maxSizeGrid = WINDOW_WIDTH;
   int quantCell = 42;
   private boolean startPressed = false;
+  private boolean showStartGame = true;
 
+  private Timer timer;
   private SnakeGrid snakeGrid;
   private SnakeBody snakeBody;
   private PressStartGame gameStart;
@@ -34,6 +38,9 @@ public class SnakePanel extends JPanel implements Runnable, KeyListener {
 
     thread = new Thread(this);
     thread.start();
+
+    timer = new Timer(350, this); // Temporizador de 1 segundo
+    timer.start();
 
     setFocusable(true);
     addKeyListener(this);
@@ -56,7 +63,11 @@ public class SnakePanel extends JPanel implements Runnable, KeyListener {
     image = createImage(getWidth(), getHeight());
     graphicsBuffer = image.getGraphics();
     if (!startPressed) {
-      gameStart.drawStartGame();
+      if (showStartGame) {
+        gameStart.showGameStart();
+      } else {
+        gameStart.showWhiteBackground();
+      }
     } else {
       showComponents();
     }
@@ -119,5 +130,15 @@ public class SnakePanel extends JPanel implements Runnable, KeyListener {
 
   @Override
   public void keyReleased(KeyEvent e) {
+  }
+
+  @Override
+  public void actionPerformed(ActionEvent e) {
+    if (!startPressed) {
+      showStartGame = !showStartGame;
+      repaint();
+    } else {
+      timer.stop();
+    }
   }
 }
