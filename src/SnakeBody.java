@@ -194,14 +194,12 @@ public class SnakeBody {
 
   public void showSnake() {
     if (buffer != null) {
-      graphicsBuffer.setColor(Color.WHITE);
       showSnake(Color.WHITE, maxSizeGrid, maxSizeGrid);
     }
   }
 
   public void showFood() {
     if (buffer != null) {
-      graphicsBuffer.setColor(Color.RED);
       showFood(Color.RED, maxSizeGrid, maxSizeGrid);
     }
   }

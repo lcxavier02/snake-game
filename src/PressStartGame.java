@@ -326,6 +326,20 @@ public class PressStartGame {
     drawCoordinates(aRectCoordinates, Color.GREEN);
   }
 
+  public void drawWhiteBackground() {
+    int windowWidth = buffer.getWidth();
+    int windowHeight = buffer.getHeight();
+    Point[] windowVertices = {
+        new Point(0, 0),
+        new Point(windowWidth, 0),
+        new Point(windowWidth, windowHeight),
+        new Point(0, windowHeight)
+    };
+
+    Color whiteColor = Color.WHITE;
+    fill(windowVertices, whiteColor);
+  }
+
   public void drawELetter() {
     int[][] aRectCoordinates = {
         { 650, 50, 690, 250 },
@@ -339,8 +353,13 @@ public class PressStartGame {
 
   public void showGameStart() {
     if (buffer != null) {
-      graphicsBuffer.setColor(Color.RED);
       drawStartGame();
+    }
+  }
+
+  public void showWhiteBackground() {
+    if (buffer != null) {
+      drawWhiteBackground();
     }
   }
 }
