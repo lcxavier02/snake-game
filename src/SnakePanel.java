@@ -1,12 +1,10 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
 
-public class SnakePanel extends JPanel implements Runnable, KeyListener, ActionListener {
+public class SnakePanel extends JPanel implements Runnable, KeyListener {
   private static final int WINDOW_WIDTH = 820;
   private static final int WINDOW_HEIGHT = 820;
   static final Dimension WINDOW_SIZE = new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -16,11 +14,10 @@ public class SnakePanel extends JPanel implements Runnable, KeyListener, ActionL
   Thread thread;
   public BufferedImage buffer;
   int maxSizeGrid = WINDOW_WIDTH;
-  int quantCell = 42;
+  int quantCell = 32;
   private boolean startPressed = false;
   private boolean showStartGame = true;
 
-  private Timer timer;
   private SnakeGrid snakeGrid;
   private SnakeBody snakeBody;
   private PressStartGame gameStart;
@@ -39,8 +36,19 @@ public class SnakePanel extends JPanel implements Runnable, KeyListener, ActionL
     thread = new Thread(this);
     thread.start();
 
-    timer = new Timer(350, this); // Temporizador de 1 segundo
-    timer.start();
+    Thread updateStartGameThread = new Thread(() -> {
+      try {
+        while (!startPressed) {
+          showStartGame = !showStartGame;
+          SwingUtilities.invokeLater(this::repaint);
+          Thread.sleep(300);
+        }
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    });
+
+    updateStartGameThread.start();
 
     setFocusable(true);
     addKeyListener(this);
@@ -130,15 +138,5 @@ public class SnakePanel extends JPanel implements Runnable, KeyListener, ActionL
 
   @Override
   public void keyReleased(KeyEvent e) {
-  }
-
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    if (!startPressed) {
-      showStartGame = !showStartGame;
-      repaint();
-    } else {
-      timer.stop();
-    }
   }
 }
