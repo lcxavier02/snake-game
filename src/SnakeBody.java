@@ -99,53 +99,25 @@ public class SnakeBody {
     drawLine(x1, y2, x1, y1, color);
   }
 
-  public void showSnake(Color color, int panelWidth, int panelHeight) {
-    int gridWidth = quantCell * sizeCell;
-    int gridHeight = quantCell * sizeCell;
+  private void fillCircle(int x, int y, int sizeCell, Color color) {
+    int centerX = x + sizeCell / 2;
+    int centerY = y + sizeCell / 2;
 
-    int emptySpaceX = (panelWidth - gridWidth) / 2;
-    int emptySpaceY = (panelHeight - gridHeight) / 2;
-
-    for (int[] point : snake) {
-      int x = emptySpaceX + (point[0] * sizeCell);
-      int y = emptySpaceY + (point[1] * sizeCell);
-      int x2 = x + sizeCell;
-      int y2 = y + sizeCell;
-      Point[] vertices = {
-          new Point(x, y),
-          new Point(x, y2),
-          new Point(x2, y2),
-          new Point(x2, y)
-      };
-      fill(vertices, snakeColor);
-      drawRect(x, y, x2, y2, color);
-    }
-  }
-
-  public void showFood(Color color, int panelWidth, int panelHeight) {
-    int gridWidth = quantCell * sizeCell;
-    int gridHeight = quantCell * sizeCell;
-
-    int emptySpaceX = (panelWidth - gridWidth) / 2;
-    int emptySpaceY = (panelHeight - gridHeight) / 2;
-
-    int squareCenterX = emptySpaceX + (food[0] * sizeCell) + sizeCell / 2;
-    int squareCenterY = emptySpaceY + (food[1] * sizeCell) + sizeCell / 2;
-    int radius = sizeCell / 3;
+    int radius = sizeCell;
 
     int cx = 0;
     int cy = radius;
     int d = 3 - 2 * radius;
 
     while (cx <= cy) {
-      for (int i = squareCenterX - cy; i <= squareCenterX + cy; i++) {
-        putPixel(i, squareCenterY + cx, color);
-        putPixel(i, squareCenterY - cx, color);
+      for (int i = centerX - cy; i <= centerX + cy; i++) {
+        putPixel(i, centerY + cx, color);
+        putPixel(i, centerY - cx, color);
       }
 
-      for (int i = squareCenterY - cy; i <= squareCenterY + cy; i++) {
-        putPixel(squareCenterX + cx, i, color);
-        putPixel(squareCenterX - cx, i, color);
+      for (int i = centerY - cy; i <= centerY + cy; i++) {
+        putPixel(centerX + cx, i, color);
+        putPixel(centerX - cx, i, color);
       }
 
       if (d < 0) {
@@ -155,6 +127,155 @@ public class SnakeBody {
         cy--;
       }
       cx++;
+    }
+  }
+
+  public void drawSnake(Color color, int panelWidth, int panelHeight) {
+    int gridWidth = quantCell * sizeCell;
+    int gridHeight = quantCell * sizeCell;
+
+    int emptySpaceX = (panelWidth - gridWidth) / 2;
+    int emptySpaceY = (panelHeight - gridHeight) / 2;
+
+    for (int i = 0; i < snake.size(); i++) {
+      int[] point = snake.get(i);
+      int x = emptySpaceX + (point[0] * sizeCell);
+      int y = emptySpaceY + (point[1] * sizeCell);
+      int x2 = x + sizeCell;
+      int y2 = y + sizeCell;
+
+      boolean isHead = (i == snake.size() - 1);
+
+      if (isHead) {
+        drawSnakeHead(x, y, sizeCell, snakeColor);
+        drawEyes(x, y, sizeCell, Color.WHITE);
+      } else {
+        drawSnakeBody(x, y, sizeCell, i);
+      }
+
+      drawRect(x, y, x2, y2, color);
+    }
+  }
+
+  private void drawSnakeHead(int x, int y, int sizeCell, Color color) {
+    int headWidth = sizeCell / 2;
+    int headHeight = sizeCell / 2;
+
+    int headX = x + (sizeCell - headWidth) / 2;
+    int headY = y + (sizeCell - headHeight) / 2;
+    int backHeadX = x;
+    int backHeadY = y;
+
+    switch (direction) {
+      case "U":
+        headY = y;
+        backHeadY = y + headHeight;
+        break;
+      case "D":
+        headY = y + sizeCell - headHeight;
+        backHeadY = y;
+        break;
+      case "L":
+        headX = x;
+        backHeadX = x + headWidth;
+        break;
+      case "R":
+        headX = x + sizeCell - headWidth;
+        backHeadX = x;
+        break;
+      default:
+        System.out.println("Dirección no válida");
+        break;
+    }
+
+    if (direction.equals("U") || direction.equals("D")) {
+      fillRect(backHeadX, backHeadY, headWidth * 2, headHeight, color);
+    } else {
+      fillRect(backHeadX, backHeadY, headWidth, headHeight * 2, color);
+    }
+    fillRect(headX, headY, headWidth, headHeight, color);
+  }
+
+  private void drawSnakeBody(int x, int y, int sizeCell, int segmentIndex) {
+    Color bodyColor = snakeColor;
+    Color darkGreen = new Color(0, 100, 0);
+
+    fillRect(x, y, sizeCell, sizeCell, bodyColor);
+
+    int scaleSize = sizeCell / 5;
+    int numScales = sizeCell / scaleSize;
+
+    for (int i = 0; i < numScales; i++) {
+      for (int j = 0; j < numScales; j++) {
+        if ((i + j) % 2 == 0) {
+          int scaleX = x + i * scaleSize + (sizeCell - numScales * scaleSize) / 2;
+          int scaleY = y + j * scaleSize + (sizeCell - numScales * scaleSize) / 2;
+
+          fillRect(scaleX, scaleY, scaleSize, scaleSize, darkGreen);
+        }
+      }
+    }
+  }
+
+  private void fillRect(int x, int y, int width, int height, Color color) {
+    for (int i = x; i < x + width; i++) {
+      for (int j = y; j < y + height; j++) {
+        putPixel(i, j, color);
+      }
+    }
+  }
+
+  private void drawEyes(int x, int y, int sizeCell, Color color) {
+    int eyeSize = sizeCell / 5;
+    int eyeOffsetX = sizeCell / 4;
+    int eyeOffsetY = sizeCell / 4;
+
+    int eye1X = x + eyeOffsetX;
+    int eye1Y = y + eyeOffsetY;
+    int eye2X = x + sizeCell - eyeOffsetX - eyeSize;
+    int eye2Y = y + eyeOffsetY;
+
+    fillCircle(eye1X, eye1Y, eyeSize, Color.WHITE);
+    fillCircle(eye2X, eye2Y, eyeSize, Color.WHITE);
+
+    int irisSize = eyeSize / 2;
+
+    int iris1X = eye1X + irisSize / 2;
+    int iris1Y = eye1Y + irisSize / 2;
+    int iris2X = eye2X + irisSize / 2;
+    int iris2Y = eye2Y + irisSize / 2;
+
+    fillCircle(iris1X, iris1Y, irisSize, Color.BLACK);
+    fillCircle(iris2X, iris2Y, irisSize, Color.BLACK);
+  }
+
+  public void drawFood(Color color, int panelWidth, int panelHeight) {
+    int gridWidth = quantCell * sizeCell;
+    int gridHeight = quantCell * sizeCell;
+
+    int emptySpaceX = (panelWidth - gridWidth) / 2;
+    int emptySpaceY = (panelHeight - gridHeight) / 2;
+
+    int centerX = emptySpaceX + (food[0] * sizeCell) + sizeCell / 2;
+    int centerY = emptySpaceY + (food[1] * sizeCell) + sizeCell / 2;
+
+    int rindRadius = sizeCell / 3;
+    fillCircle(centerX, centerY, rindRadius, new Color(0, 128, 0));
+
+    int fleshRadius = rindRadius * 2 / 3;
+    fillCircle(centerX, centerY, fleshRadius, Color.RED);
+
+    int numSeeds = 15;
+    double seedAngle = 2 * Math.PI / numSeeds;
+    int seedRadius = fleshRadius / 5;
+    int seedOffsetX = fleshRadius / 4;
+    int seedOffsetY = fleshRadius / 4;
+
+    for (int i = 0; i < numSeeds; i++) {
+      double seedX = centerX + Math.cos(i * seedAngle) * (fleshRadius - seedRadius + seedOffsetX);
+      double seedY = centerY + Math.sin(i * seedAngle) * (fleshRadius - seedRadius + seedOffsetY);
+
+      fillCircle((int) seedX, (int) seedY, seedRadius, Color.BLACK);
     }
   }
 
@@ -194,13 +315,13 @@ public class SnakeBody {
 
   public void showSnake() {
     if (buffer != null) {
-      showSnake(Color.WHITE, maxSizeGrid, maxSizeGrid);
+      drawSnake(snakeColor, maxSizeGrid, maxSizeGrid);
     }
   }
 
   public void showFood() {
     if (buffer != null) {
-      showFood(Color.RED, maxSizeGrid, maxSizeGrid);
+      drawFood(Color.RED, maxSizeGrid, maxSizeGrid);
     }
   }
 
@@ -281,7 +402,7 @@ public class SnakeBody {
 
   public void drawText(String text, int x, int y, int fontSize, Color color) {
     graphicsBuffer.setColor(color);
-    graphicsBuffer.setFont(new Font("Arial", Font.PLAIN, fontSize));
+    graphicsBuffer.setFont(new Font("Arial", Font.BOLD, fontSize));
     graphicsBuffer.drawString(text, x, y);
   }
 
